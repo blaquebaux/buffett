@@ -28,7 +28,7 @@ mechanic — and test each on its own for whether it *still* holds up out of sam
 only the fragments that survive, under the engine's governance. The goal is not to imitate Berkshire;
 it is to keep what the data still supports and discard the folklore.
 
-## Research plan (Path A — not yet built)
+## Research plan (Path A)
 
 - **The five fragments.** Build clean, cross-sectional proxies for value, quality, safety (low-beta),
   moat/persistence, and leverage-financing-cost. Measure each fragment's standalone premium, net of
@@ -41,11 +41,34 @@ it is to keep what the data still supports and discard the folklore.
   the safe/quality book explicitly, inside the engine's Layer-3 gate and drawdown rails — the opposite
   of [Broad](https://github.com/blaquebaux/broad)'s rejected naive leverage.
 
-Nothing above is implemented or validated. This is the map, not the territory.
+## Research — first pass done
+
+Full detail in [`research/README.md`](research/README.md). The scorecard (Alpaca SIP, 2016–2026;
+fragments = tradable factor ETFs):
+
+| # | Question | Verdict |
+|---|----------|---------|
+| 1 | Do the fragments beat the market? | ❌ none did — SPY +0.89 > QUAL +0.84 > MOAT/VLUE +0.79/+0.78 > USMV +0.75; all slightly −alpha |
+| 2 | What *is* Berkshire, in fragments? | ✅ **clean win** — BRK.B beta 0.79 (safe), loads +0.55 low-beta / +0.32 value, R² 0.60, residual alpha +2%/yr |
+| 3 | Does the blend beat its parts? | ⚠️ diversifies vol not Sharpe — blend +0.83 ≈ best single (QUAL +0.84) < SPY +0.89 |
+| 4 | Leverage / cheap float? | ⚠️ scales return+DD together; +3% margin kills it; this decade you'd lever the market, not the safe book |
+
+**The synthesis:** the decomposition is a genuine win — **Berkshire resolves textbook-clean into
+Buffett's fragments** (beta 0.79 safe, heaviest on low-beta + value, R² 0.60) with ~2%/yr of residual
+alpha that is exactly the part no ETF captures: *selection + cheap insurance float*. But turned forward
+as tradable factors, "use the best parts" did **not** beat the market over 2016–2026 — not value, not
+quality, not low-vol, not moat, and **not even Buffett himself** (BRK.B +0.73 < SPY +0.89). This was
+the mega-cap-growth decade: the cap-weighted index *was* the quality juggernaut, so the tilts were
+**defensive beta, not alpha**. Recombination lowers vol but not into excess Sharpe; leverage confirms
+the base's law (financing decides, cheap float is the un-buyable moat). The one usable, honest piece is
+narrow: **low-vol (USMV) as a drawdown-control lever** (14% vol, −33% DD) — a guardrail, not alpha.
+The real Buffett edge is the fragment a retail book *cannot* buy.
 
 ## Status
-**Concept.** Thesis and research plan only — no sketches run, no driver, nothing validated to the
-spine's bar. A decomposition to be tested fragment by fragment.
+**Research: first pass complete — qualified** (`research/`). The BRK.B decomposition validates the
+cheap-safe-quality story cleanly; but as forward tradable fragments none beat the market this decade
+(defensive beta, not alpha), and the true moat (cheap float) is un-buyable in a wrapper. Usable piece:
+low-vol for defense. No standalone alpha keeper, no live driver; nothing validated to the spine's bar.
 
 ## About Blaque Baux
 
@@ -67,7 +90,7 @@ base/blueprint and holds the [full family roster](https://github.com/blaquebaux/
 ## Layout
 ```
 engine/     the Blaque Baux platform (git submodule -> blaquebaux/base)
-research/   the research plan (Path A) — sketches land here once run
+research/   four Path-A sketches (fragments, BRK.B decomposition, recombination, leverage) + scorecard
 live/       governed live drivers (once a sleeve graduates to paper A/B)
 ```
 
