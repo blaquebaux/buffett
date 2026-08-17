@@ -64,11 +64,45 @@ the base's law (financing decides, cheap float is the un-buyable moat). The one 
 narrow: **low-vol (USMV) as a drawdown-control lever** (14% vol, −33% DD) — a guardrail, not alpha.
 The real Buffett edge is the fragment a retail book *cannot* buy.
 
+## Live driver — built (paper/dry-run)
+
+The research's honest keeper — *the cheap-safe-quality fragments as a defensive book* — is now a
+governed driver on the engine ([`live/buffett_live.jl`](live/buffett_live.jl)): an equal-weight blend
+of the four fragment ETFs (**QUAL, USMV, VLUE, MOAT**), ~1× gross, monthly rebalance, through the same
+Layer-3 safety gate, ledger, reconcile, kill switch and HWM as the spine. It is deliberately **not**
+sold as a market-beater — research says the fragments are defensive beta, not alpha — but as a
+*governed defensive equity sleeve*.
+
+```bash
+BB_DRYRUN=1 bash live/run_buffett_daily.sh          # prints the blend, places nothing
+julia --project=engine live/buffett_validation.jl   # the two-decision validation
+```
+
+**Validation — two decisions:**
+
+| | book | Sharpe | CAGR | vol | maxDD |
+|---|---|---|---|---|---|
+| | SPY (the market) | +0.96 | 15.6% | 16.6% | −25% |
+| ✅ | **BLEND (QUAL/USMV/VLUE/MOAT)** | +0.95 | 14.0% | 14.9% | **−23%** |
+| | BLEND + bonds-regime overlay | +0.92 | 11.6% | 12.8% | −21% |
+
+- **Decision 1 — graduate the blend: PASS.** A genuine defensive book — calmer than the market
+  (lower vol, shallower drawdown) at ~the same Sharpe. Ships to the paper/dry-run path.
+- **Decision 2 — the bonds-regime overlay: OFF by default.** It's wired in (consumes
+  [Bonds](https://github.com/blaquebaux/bonds)' `bonds_regime.txt`, same as
+  [Boom](https://github.com/blaquebaux/boom)/[Broad](https://github.com/blaquebaux/broad)), but here it
+  *reduces drawdown while costing ~0.03 Sharpe* — because the blend is **already defensive** (USMV low-vol
+  is baked in), so de-risking twice is redundant. Enable with `BB_BONDS_OVERLAY=1` if you want the extra
+  drawdown reduction anyway. This is the honest end of the cross-sleeve pattern: **the more a sleeve
+  already manages its own risk, the less the regime overlay adds** (Boom −22% DD → Broad −9% → Buffett:
+  not worth the Sharpe).
+
 ## Status
-**Research: first pass complete — qualified** (`research/`). The BRK.B decomposition validates the
-cheap-safe-quality story cleanly; but as forward tradable fragments none beat the market this decade
-(defensive beta, not alpha), and the true moat (cheap float) is un-buyable in a wrapper. Usable piece:
-low-vol for defense. No standalone alpha keeper, no live driver; nothing validated to the spine's bar.
+**Research complete + live driver built — defensive blend, validation PASS (Decision 1); bonds-regime
+overlay wired but OFF by default (Decision 2 — redundant on an already-defensive book).** A governed
+defensive equity sleeve, calmer than the market at ~the same Sharpe; **not** a standalone-alpha keeper
+(the true Buffett moat, cheap float, is un-buyable in a wrapper). Paper/dry-run; nothing validated to
+the spine's bar, no real capital.
 
 ## About Blaque Baux
 
@@ -91,7 +125,7 @@ base/blueprint and holds the [full family roster](https://github.com/blaquebaux/
 ```
 engine/     the Blaque Baux platform (git submodule -> blaquebaux/base)
 research/   four Path-A sketches (fragments, BRK.B decomposition, recombination, leverage) + scorecard
-live/       governed live drivers (once a sleeve graduates to paper A/B)
+live/       buffett_live.jl (defensive blend + bonds-regime overlay, off by default) + buffett_validation.jl + wrapper + plist
 ```
 
 ## License
