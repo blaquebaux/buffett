@@ -78,31 +78,31 @@ BB_DRYRUN=1 bash live/run_buffett_daily.sh          # prints the blend, places n
 julia --project=engine live/buffett_validation.jl   # the two-decision validation
 ```
 
-**Validation — two decisions:**
+**Validation — two decisions** (full **2016–2026 SIP history**):
 
 | | book | Sharpe | CAGR | vol | maxDD |
 |---|---|---|---|---|---|
-| | SPY (the market) | +0.96 | 15.6% | 16.6% | −25% |
-| ✅ | **BLEND (QUAL/USMV/VLUE/MOAT)** | +0.95 | 14.0% | 14.9% | **−23%** |
-| | BLEND + bonds-regime overlay | +0.92 | 11.6% | 12.8% | −21% |
+| | SPY (the market) | +0.89 | 15.2% | 17.8% | −34% |
+| | BLEND (QUAL/USMV/VLUE/MOAT) | +0.82 | 13.3% | 16.9% | −35% |
+| | BLEND + bonds-regime overlay | +0.78 | 11.9% | 16.1% | −35% |
 
-- **Decision 1 — graduate the blend: PASS.** A genuine defensive book — calmer than the market
-  (lower vol, shallower drawdown) at ~the same Sharpe. Ships to the paper/dry-run path.
-- **Decision 2 — the bonds-regime overlay: OFF by default.** It's wired in (consumes
-  [Bonds](https://github.com/blaquebaux/bonds)' `bonds_regime.txt`, same as
-  [Boom](https://github.com/blaquebaux/boom)/[Broad](https://github.com/blaquebaux/broad)), but here it
-  *reduces drawdown while costing ~0.03 Sharpe* — because the blend is **already defensive** (USMV low-vol
-  is baked in), so de-risking twice is redundant. Enable with `BB_BONDS_OVERLAY=1` if you want the extra
-  drawdown reduction anyway. This is the honest end of the cross-sleeve pattern: **the more a sleeve
-  already manages its own risk, the less the regime overlay adds** (Boom −22% DD → Broad −9% → Buffett:
-  not worth the Sharpe).
+- **Decision 1 — graduate the blend: FAIL (stays dry-run).** Over a full cycle the blend is **not a
+  genuine defensive book** — its drawdown (−35%) is no better than SPY's (−34%), and its Sharpe is
+  lower (+0.82 vs +0.89). It's marginally *lower-vol* (16.9% vs 17.8%) but not lower-*drawdown*: VLUE
+  and MOAT are high-beta equity that fell with the market in 2020 and 2022, and USMV's cushion isn't
+  enough to make the blend defensive. An earlier run on the engine's IEX feed (~2021+) showed the blend
+  shallower than SPY, but that was the mild 2021–2026 window; the full cycle says otherwise. Honest
+  verdict: the blend is roughly market-like, so it does **not** clear the defensive bar — it stays a
+  dry-run driver, consistent with the research (defensive *beta*, not a keeper).
+- **Decision 2 — the bonds-regime overlay: OFF.** It reduces nothing here (drawdown unchanged) and
+  costs ~0.04 Sharpe. Wired in, available via `BB_BONDS_OVERLAY=1`, but off.
 
 ## Status
-**Research complete + live driver built — defensive blend, validation PASS (Decision 1); bonds-regime
-overlay wired but OFF by default (Decision 2 — redundant on an already-defensive book).** A governed
-defensive equity sleeve, calmer than the market at ~the same Sharpe; **not** a standalone-alpha keeper
-(the true Buffett moat, cheap float, is un-buyable in a wrapper). Paper/dry-run; nothing validated to
-the spine's bar, no real capital.
+**Research complete + live driver built — but validation MIXED on the full cycle: the blend is
+market-like, not genuinely defensive (DD −35% ≈ SPY −34%), so it does NOT clear the defensive bar and
+stays dry-run.** The bonds-regime overlay is wired but OFF (adds nothing). Consistent with the research
+— the fragments are defensive *beta*, not alpha, and the true Buffett moat (cheap float) is un-buyable
+in a wrapper. Paper/dry-run only; no real capital.
 
 ## About Blaque Baux
 
