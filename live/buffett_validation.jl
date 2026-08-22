@@ -23,7 +23,7 @@ _cagr(r) = (lvl = cumprod(1 .+ r); lvl[end]^(252 / length(r)) - 1)
 function _jb(r); r = r[isfinite.(r)]; n = length(r); m = mean(r); s = std(r); s == 0 && return (p=1.0, skew=0.0, exkurt=0.0, normal=true)
     z = (r .- m) ./ s; sk = mean(z.^3); ku = mean(z.^4) - 3; jb = n/6*(sk^2 + ku^2/4); (p=exp(-jb/2), skew=sk, exkurt=ku, normal=(exp(-jb/2) >= 0.05)); end
 _jensen(r, rb; rf=0.0) = (b = cov(r, rb)/var(rb); (alpha_ann = ((mean(r) - rf/252) - b*(mean(rb) - rf/252))*252, beta = b))
-_m2(r, rb; rf=0.0) = (sh = (mean(r) - rf/252)/std(r)*sqrt(252); (m2_excess = (rf + sh*std(rb)*sqrt(252)) - ((1+mean(rb))^252 - 1),))
+_m2(r, rb; rf=0.0) = (shp = (mean(r)-rf/252)/std(r)*sqrt(252); shb = (mean(rb)-rf/252)/std(rb)*sqrt(252); (m2_excess = (shp-shb)*std(rb)*sqrt(252),))  # Sharpe-difference form (bench vs itself = 0)
 
 function fetch_panel(U, lb = 2600)
     try
